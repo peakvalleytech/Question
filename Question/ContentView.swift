@@ -11,18 +11,16 @@ import CoreData
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @State var isEditing : Bool = false
-    @State var question : String = ""
-    @State var answer : String = ""
+    @State var questionText : String = ""
+    @State var answerText : String = ""
     
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+    @FetchRequest(sortDescriptors: [])
+    private var questions: FetchedResults<Question>
+   
     var body: some View {
         NavigationView {
             VStack {
-                Text($question.wrappedValue)
+                Text(getQuestion()?.text ?? "")
                     .font(.title)
                     .fontWeight(.black)
                     .foregroundColor(.primary)
@@ -46,10 +44,10 @@ struct ContentView: View {
                 NavigationView {
                     Form {
                         Section {
-                            TextField("Question", text: $question)
+                            TextField("Question", text: $questionText)
                         }
                         Section {
-                            TextField("Answer", text: $answer)
+                            TextField("Answer", text: $answerText)
                         }
                         Section {
                             Button("Done") {
@@ -61,22 +59,37 @@ struct ContentView: View {
             }
         }
     }
-
+    
+    private func getQuestion()  -> Question? {
+        if questions.isEmpty {
+            return nil
+        } else {
+            return questions[0]
+        }
+    }
+    
     private func saveQuestion() {
+        var question = getQuestion()
+        if (question == nil) {
+            question = Question(context : viewContext)
+            question?.text = questionText
+        } else {
+            question?.text = questionText
+        }
         isEditing = false
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+        do {
+            try viewContext.save()
+        } catch {
+            // Replace this implementation with code to handle the error appropriately.
+            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
+//            offsets.map { items[$0] }.forEach(viewContext.delete)
 
             do {
                 try viewContext.save()

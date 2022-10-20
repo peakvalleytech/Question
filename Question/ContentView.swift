@@ -31,7 +31,7 @@ struct ContentView: View {
                             .font(.title)
                             .fontWeight(.black)
                             .foregroundColor(.primary)
-                    }  
+                    }
                 }
                 .frame(maxWidth: UIScreen.main.bounds.size.width - 32, maxHeight:300)
                 .background(Color.mint).cornerRadius(10)
@@ -43,7 +43,7 @@ struct ContentView: View {
                     } else {
                         Text("Show Answer")
                     }
-                                    }
+                }.padding(16)
             }.navigationTitle("Question")
             .toolbar {
                 ToolbarItem {

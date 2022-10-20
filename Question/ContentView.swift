@@ -13,32 +13,45 @@ struct ContentView: View {
     @State var isEditing : Bool = false
     @State var questionText : String = ""
     @State var answerText : String = ""
-    
+    @State var showAnswer : Bool = false
     @FetchRequest(sortDescriptors: [])
     private var questions: FetchedResults<Question>
    
     var body: some View {
         NavigationView {
             VStack {
-                Text(getQuestion()?.text ?? "")
-                    .font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.primary)
+                VStack {
+                    if (showAnswer) {
+                        Text(getQuestion()?.answer ?? "")
+                            .font(.title)
+                            .fontWeight(.black)
+                            .foregroundColor(.primary)
+                    } else {
+                        Text(getQuestion()?.text ?? "")
+                            .font(.title)
+                            .fontWeight(.black)
+                            .foregroundColor(.primary)
+                    }
+                   
+                    
+                }
+                .frame(maxWidth: UIScreen.main.bounds.size.width - 32, maxHeight:300)
+                .background(Color.mint).cornerRadius(10)
+                Button(action: {
+                    showAnswer = !showAnswer
+                }) {
+                    Text("Show Answer")
+                }
             }
-            .frame(maxWidth: UIScreen.main.bounds.size.width - 32, maxHeight:300)
-            .background(Color.mint).cornerRadius(10)
-               
-            .toolbar {
-                ToolbarItem {
-                    Button(action: {
-                        isEditing = true
-                    } ) {
-                        Label("Edit Question", systemImage: "pencil")
+                .toolbar {
+                    ToolbarItem {
+                        Button(action: {
+                            isEditing = true
+                        } ) {
+                            Label("Edit Question", systemImage: "pencil")
+                        }
                     }
                 }
-
-            }
-            Text("Select an item")
         }.sheet(isPresented : $isEditing) {
             VStack {
                 NavigationView {
@@ -73,8 +86,10 @@ struct ContentView: View {
         if (question == nil) {
             question = Question(context : viewContext)
             question?.text = questionText
+            question?.answer = answerText
         } else {
             question?.text = questionText
+            question?.answer = answerText
         }
         isEditing = false
         do {

@@ -40,18 +40,22 @@ struct ContentView: View {
                 Button(action: {
                     showAnswer = !showAnswer
                 }) {
-                    Text("Show Answer")
-                }
-            }
-                .toolbar {
-                    ToolbarItem {
-                        Button(action: {
-                            isEditing = true
-                        } ) {
-                            Label("Edit Question", systemImage: "pencil")
-                        }
+                    if showAnswer {
+                       Text("Back")
+                    } else {
+                        Text("Show Answer")
+                    }
+                                    }
+            }.navigationTitle("Question")
+            .toolbar {
+                ToolbarItem {
+                    Button(action: {
+                        isEditing = true
+                    } ) {
+                        Label("Edit Question", systemImage: "pencil")
                     }
                 }
+            }
         }.sheet(isPresented : $isEditing) {
             VStack {
                 NavigationView {

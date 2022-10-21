@@ -16,7 +16,7 @@ struct ContentView: View {
     @State var showAnswer : Bool = false
     @FetchRequest(sortDescriptors: [])
     private var questions: FetchedResults<Question>
-   
+
     var body: some View {
         NavigationView {
             VStack {
@@ -71,6 +71,9 @@ struct ContentView: View {
                         }
                     }.navigationBarTitle(Text("Edit Question"))
                 }
+            }.onAppear {
+                questionText = getQuestion()?.text ?? ""
+                answerText = getQuestion()?.answer ?? ""
             }
         }
     }

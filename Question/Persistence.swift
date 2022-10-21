@@ -14,7 +14,8 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         let question = Question(context : viewContext)
-    
+        question.text = "What is your one thing for this hour that will help you achieve your one thing for today that will help you achieve your one thing for the week?"
+        question.answer = "Learning iOS development and reading to improve software development fundamentals."
         do {
             try viewContext.save()
         } catch {

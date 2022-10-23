@@ -26,11 +26,13 @@ struct ContentView: View {
                             .font(.title)
                             .fontWeight(.black)
                             .foregroundColor(.primary)
+                            .padding(12)
                     } else {
                         Text(getQuestion()?.text ?? "")
                             .font(.title)
                             .fontWeight(.black)
                             .foregroundColor(.primary)
+                            .padding(12)
                     }
                 }
                 .frame(maxWidth: UIScreen.main.bounds.size.width - 32, maxHeight:300)
